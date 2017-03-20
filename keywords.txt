@@ -1,0 +1,2 @@
+serialize2eeprom KEYWORD1
+eepromIf  KEYWORD1

@@ -134,10 +134,11 @@ bool serialize2eeprom::Load(unsigned char logLevel, int dataSignature, int baseO
   return ok;
 }
 
-uint8_t serialize2eeprom::checksum(void *pBuf, int sz)
+unsigned char serialize2eeprom::checksum(void *pBuf, int sz)
 {
-  int8_t chksum = 45;
+  signed char chksum = 45;
   for (int i = 0; i < sz; ++i)
-    chksum += ((int8_t *)pBuf)[i];
-  return (uint8_t)chksum;
+    chksum += ((signed char *)pBuf)[i];
+  return (unsigned char)chksum;
 }
+

@@ -22,7 +22,7 @@ public:
   static bool Save(unsigned char logLevel, int dataSignature, int baseOffset, void *p, int dataLen);
   static bool Load(unsigned char logLevel, int dataSignature, int baseOffset, void *p, int dataLen);
 private:
-  static uint8_t checksum(void *pBuf, int sz);
+  static unsigned char checksum(void *pBuf, int sz);
 };
 
 

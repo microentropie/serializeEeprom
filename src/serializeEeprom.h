@@ -12,17 +12,40 @@ How to install:
   https://www.arduino.cc/en/guide/libraries
 */
 
+/*
+The various Arduino and Genuino boards have different EEPROM sizes:
+512 bytes on the ATmega168 and ATmega8
+1024 bytes on the ATmega328,
+The Arduino and Genuino 101 boards have an emulated EEPROM space of 1024 bytes.
+4096 bytes on the ATmega1280 and ATmega2560
+4096 bytes on ESP8266
+0-64 bytes on ESP32 (see 'serializeEeprom-Esp32.cpp' for more details)
+*/
+
 #define EEPROM_log_NO 0
 #define EEPROM_log_RW 1
 #define EEPROM_log_VERBOSE 2
 
+#ifndef uint32_t
+typedef unsigned int uint32_t;
+#endif //uint32_t
+#ifndef uint16_t
+typedef unsigned short uint16_t;
+#endif //uint16_t
+#ifndef uint8_t
+typedef unsigned char uint8_t;
+#endif //uint8_t
+
+//#include <c_types.h>
+
 class serialize2eeprom
 {
 public:
-  static bool Save(unsigned char logLevel, int dataSignature, int baseOffset, void *p, int dataLen);
-  static bool Load(unsigned char logLevel, int dataSignature, int baseOffset, void *p, int dataLen);
+  static bool Save(unsigned char logLevel, uint32_t dataSignature, uint16_t baseOffset, void *p, uint16_t dataLen);
+  static bool Load(unsigned char logLevel, uint32_t dataSignature, uint16_t baseOffset, void *p, uint16_t dataLen);
+  static bool Init();
 private:
-  static unsigned char checksum(void *pBuf, int sz);
+  static unsigned char checksum(void *pBuf, uint16_t sz);
 };
 
 
@@ -35,9 +58,11 @@ public:
 
   static bool Load(T *p, unsigned char logLevel);
 
-  static int Signature;
-  static int baseOffset;
+  static uint32_t Signature;
+  static uint16_t baseOffset;
 };
+
+#include "char-int-char.h"
 
 // here is the implementation;
 // it is here because they are templates:
